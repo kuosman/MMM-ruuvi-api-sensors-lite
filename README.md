@@ -1,6 +1,6 @@
 # Module for [MagicMirror](https://magicmirror.builders/): Ruuvi api sensors lite
 
-The `MMM-ruuvi-api-sensors-lite` module fetches Ruuvi sensors data from User API (https://docs.ruuvi.com/communication/cloud/user-api).
+The `MMM-ruuvi-api-sensors-lite` module fetches Ruuvi sensors data from User API (https://docs.ruuvi.com/communication/cloud/user-api) and show sensor name and temperature value.
 
 
 ## Screenshot
