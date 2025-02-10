@@ -1,0 +1,5 @@
+{
+    "configEmpty": "Please setup config for module: ",
+    "loading": "Loading...",
+    "errorGettingData": "Error getting data "
+}

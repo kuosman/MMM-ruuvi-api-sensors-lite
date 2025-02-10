@@ -1,0 +1,5 @@
+{
+    "configEmpty": "Aseta config-tiedostoon, modulille: ",
+    "loading": "Ladataan...",
+    "errorGettingData": "Virhe haettaessa dataa"
+}

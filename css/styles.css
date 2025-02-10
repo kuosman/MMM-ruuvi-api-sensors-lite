@@ -1,0 +1,12 @@
+div.MMM-ruuvi-api-sensors-lite td {
+  text-align: right;
+  padding-right: 16px;
+}
+div.MMM-ruuvi-api-sensors-lite td.time {
+  font-size: 14px;
+}
+div.MMM-ruuvi-api-sensors-lite td span.battery-empty-icon {
+  padding-left: 8px;
+  position: relative;
+  top: 1px;
+}/*# sourceMappingURL=styles.css.map */

@@ -1,0 +1,27 @@
+{
+    "name": "Magic-Mirror-Module-Ruuvi-Api-Sensors-Lite",
+    "version": "1.0.0",
+    "description": "This module for the Magic Mirror allows you to show Ruuvi sensors temepratures from ruuvi gateway api.",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kuosman/MMM-ruuvi-api-sensors-lite"
+    },
+    "keywords": [
+        "magic mirror",
+        "smart mirror",
+        "module",
+        "remote control",
+        "control"
+    ],
+    "author": "Marko Kuosmanen",
+    "contributors": "git+https://github.com/kuosman/MMM-ruuvi-api-sensors-lite/graphs/contributors",
+    "license": "MIT",
+    "bugs": {
+        "url": "git+https://github.com/kuosman/MMM-ruuvi-api-sensors-lite/issues"
+    },
+    "homepage": "git+https://github.com/kuosman/MMM-ruuvi-api-sensors-lite#readme",
+    "dependencies": {
+        "moment": "latest",
+        "request": "latest"
+    }
+}
