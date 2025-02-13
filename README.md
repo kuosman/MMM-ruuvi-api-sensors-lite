@@ -40,6 +40,6 @@ The following properties can be configured:
 | `batteryEmptyIcon`			| `battery-half`              | Battery empty icon. See others: https://fontawesome.com/icons?d=gallery
 | `updateInterval`				| `30000`                     | Update interval in milliseconds. Limited minumum value for 1 minute because API blocks faster updates.
 | `apiUrl`						| `https://network.ruuvi.com` | Api url
-| `token`                       |                             | **Necessary** own token, read more: https://docs.ruuvi.com/communication/cloud/user-api
+| `token`                       |                             | **Necessary** own token, get it: <br>- Register user or reset token: Send POST message with following body ```{"email": "your@email.com"}``` to `https://network.ruuvi.com/register`<br>- Verify account: Send GET message with `token` parameter to `https://network.ruuvi.com/verify?token=<TOKEN IN YOUR EMAIL>`<br>- When verified account you get response JSON where your acces token is<br><br>read more: https://docs.ruuvi.com/communication/cloud/user-api
 | `negativeColor`               | `#4800FF`                   | Highlight negative value this color
 | `highlightNegative`           | `true`                      | Higlight negative measurements true/false
