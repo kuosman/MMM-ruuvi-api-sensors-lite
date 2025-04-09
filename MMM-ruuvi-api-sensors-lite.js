@@ -11,13 +11,13 @@
 Module.register('MMM-ruuvi-api-sensors-lite', {
     // Default module config.
     defaults: {
-        temperatureIcon: 'temperature-half', // See free icons: https://fontawesome.com/icons?d=gallery
         batteryEmptyIcon: 'battery-half', // See free icons: https://fontawesome.com/icons?d=gallery
         updateInterval: 5 * 1000 * 60, // every 5 minutes
         apiUrl: 'https://network.ruuvi.com',
         token: '',
         negativeColor: '#4800FF',
-        highlightNegative: true
+        highlightNegative: true,
+        hideNotTodayMeasurement: false
     },
 
     sensorsData: null,
@@ -119,20 +119,17 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
 
         // create dom element of sensor data's
         self.sensorsData.forEach((sensor, index) => {
+            if (self.config.hideNotTodayMeasurement && !sensor.isTodayMeasurement) return;
             const sensorData = document.createElement('tr');
             const sensorName = document.createElement('td');
             sensorName.className = 'name'
             sensorName.innerHTML = (sensor.battery > self.batteryLimit
                     ? sensor.name
                     : sensor.name + batteryEmptyIcon);
-            const sensorTemperatureIcon = document.createElement('td');
-            sensorTemperatureIcon.className = 'bright temperature-icon';
-            sensorTemperatureIcon.innerHTML = temperatureIcon;
             const sensorTemperature = document.createElement('td');
             sensorTemperature.className = 'align-right bright temperature';
             sensorTemperature.innerHTML = self._formatDecimal(sensor.temperature, 1) +' &#8451;';
             sensorData.appendChild(sensorName);
-            sensorData.appendChild(sensorTemperatureIcon);
             sensorData.appendChild(sensorTemperature);
             wrapper.appendChild(sensorData);
         });
@@ -215,7 +212,6 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
      */
     socketNotificationReceived: function (notification, payload) {
         if (payload.identifier !== this.identifier) return;
-        console.log('NOTIFICATION', notification, payload);
 
         switch (notification) {
             case 'MMM_RUUVI_API_SENSORS_LITE_SENSORS_RESPONSE':

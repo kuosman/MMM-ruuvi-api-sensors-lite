@@ -319,6 +319,7 @@ module.exports = NodeHelper.create({
                                 pressure: parsed.pressure,
                                 temperature: parsed.temperature,
                                 battery: parsed.battery,
+                                isTodayMeasurement: moment(time * 1000).isSame(moment(), 'day')
                             };
                             sensors.push(s);
                         });
