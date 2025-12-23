@@ -15,7 +15,7 @@ div.MMM-ruuvi-api-sensors-lite .rating-container {
   display: flex;
   gap: 5px;
 }
-div.MMM-ruuvi-api-sensors-lite .rating-container.bar {
+div.MMM-ruuvi-api-sensors-lite .rating-container div.bar {
   width: 16px;
   height: 6px;
   border: 2px solid white;
@@ -23,6 +23,6 @@ div.MMM-ruuvi-api-sensors-lite .rating-container.bar {
   transition: background-color 0.3s;
   border-radius: 4px;
 }
-div.MMM-ruuvi-api-sensors-lite .rating-container.bar.filled {
+div.MMM-ruuvi-api-sensors-lite .rating-container div.bar.filled {
   background-color: white; /* väritetty palkki */
 }/*# sourceMappingURL=styles.css.map */

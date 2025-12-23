@@ -32,7 +32,9 @@ function parseGatewayResponse(apiResponse) {
                 name: sensor.name,
                 rssi: m.rssi,
                 timestamp: m.timestamp,
-                timestampString: time,
+                timestampString: moment(time * 1000).format(
+                    'DD.MM.YYYY HH:mm'
+                ),
                 isTodayMeasurement: moment(time * 1000).isSame(moment(), 'day'),
                 isRuuviAir: isRuuviAir(parsed),
                 ...parsed,
@@ -42,12 +44,13 @@ function parseGatewayResponse(apiResponse) {
 }
 
 function iaqScoreToLevel(iaq) {
-    if (!iaq) return null;
-    if (iaq <= 20) return 1; // Excellent
-    if (iaq <= 40) return 2; // Good
-    if (iaq <= 60) return 3; // Fair
-    if (iaq <= 80) return 4; // Poor
-    return 5; // Very Poor
+    if (iaq == null) return null;
+
+    if (iaq >= 85) return 1; // Excellent
+    if (iaq >= 70) return 2; // Good
+    if (iaq >= 55) return 3; // Moderate
+    if (iaq >= 40) return 4; // Poor
+    return 5;               // Very Poor
 }
 
 /* =========================
@@ -119,14 +122,33 @@ function isRuuviAir(parsed) {
 /* =========================
    IAQ-calculation
 ========================= */
+function normalizeVoc(vocRaw) {
+    if (vocRaw == null) return null;
+
+    // clamp uint16
+    const v = Math.min(Math.max(vocRaw, 0), 65535);
+
+    // logaritminen skaala (toimii hyvin)
+    return Math.min(500, Math.log10(v + 1) * 100);
+}
+
 function calculateIAQ({ voc, nox }) {
     if (voc == null && nox == null) return null;
 
-    let iaq = 0;
-    if (voc != null) iaq += Math.min(voc / 500, 1) * 50;
-    if (nox != null) iaq += Math.min(nox / 100, 1) * 50;
+    let badness = 0;
 
-    return Math.round(iaq);
+    if (voc != null) {
+        const v = normalizeVoc(voc) / 500;
+        badness += Math.pow(v, 2) * 75; // VOC dominoi
+    }
+
+    if (nox != null) {
+        const n = Math.min(nox / 100, 1);
+        badness += Math.pow(n, 2) * 25;
+    }
+
+    const iaq = Math.round(100 - Math.min(badness, 100));
+    return iaq;
 }
 
 /* =========================

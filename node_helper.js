@@ -64,10 +64,9 @@ module.exports = NodeHelper.create({
             function (error, response, body) {
                 if (!error && response.statusCode === 200) {
                     const data = JSON.parse(body);
-                    const sensors = [];
+                    let sensors = [];
                     if (data.result === 'success') {
-                        const sensors = parseGatewayResponse(data);
-
+                        sensors = parseGatewayResponse(data);
                         sensors.sort(function (a, b) {
                             var x = a.name.toLowerCase();
                             var y = b.name.toLowerCase();

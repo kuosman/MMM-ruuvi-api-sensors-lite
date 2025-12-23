@@ -91,10 +91,9 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
     getRowDom: function () {
         const self = this;
         var wrapper = document.createElement('table');
-
-
         if (!self.config.sensor === null) {
-            wrapper.innerHTML = this.translate('configEmpty') + this.name + '.';
+            wrapper.innerHTML =
+                this.translate('configEmpty') + this.name + '.';
             wrapper.className = 'ruuvi-api-sensors-lite small';
             return wrapper;
         }
@@ -123,7 +122,7 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
             const sensorName = document.createElement('td');
             sensorName.className = 'name';
             sensorName.innerHTML =
-                sensor.batteryVoltage > self.batteryLimit
+                (sensor.batteryVoltage > self.batteryLimit) || sensor.isRuuviAir
                     ? sensor.name
                     : sensor.name + batteryEmptyIcon;
             const sensorTemperature = document.createElement('td');
@@ -141,13 +140,16 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
 
                 const iaqLevel = document.createElement('tr');
                 const iaqContainer = document.createElement('div');
+                iaqContainer.className = 'rating-container';
                 for (let i = 1; i <= 5; i++) {
                     const bar = document.createElement('div');
                     bar.classList.add('bar');
-                    if (i >= 5 - sensor.iaqLevel) {
+                    bar.classList.add('iaq-level-'+sensor.iaqLevel);
+                    bar.classList.add('iaq-'+sensor.iaq);
+                    if (i <= sensor.iaqLevel) {
                         bar.classList.add('filled');
                     }
-                    ratingContainer.appendChild(bar);
+                    iaqContainer.appendChild(bar);
                 }
 
                 iaqLevel.appendChild(iaqContainer);
@@ -162,8 +164,8 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
             const sensorTime = document.createElement('td');
             sensorTime.className = 'light small time';
             sensorTime.colSpan = '3';
-            sensorTime.innerHTML = self.sensorsData[0].time;
-            sensorData.appendChild(sensorTime)
+            sensorTime.innerHTML = self.sensorsData[0].timestampString;
+            sensorData.appendChild(sensorTime);
             wrapper.appendChild(sensorData);
         }
         return wrapper;
