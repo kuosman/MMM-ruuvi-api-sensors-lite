@@ -1,7 +1,7 @@
 var moment = require('moment');
 const request = require('request');
 var NodeHelper = require('node_helper');
-const { parseGatewayResponse } = require('../ruuviGatewayParser');
+const { parseGatewayResponse } = require('./ruuviGatewayParser');
 
 module.exports = NodeHelper.create({
     updateTimer: null,
