@@ -106,11 +106,6 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
         }
         wrapper.className = 'ruuvi-api-sensors-lite small';
 
-        var temperatureIcon =
-            '<span class="icon"><i class="fas fa-' +
-            self.config.temperatureIcon +
-            '"></i></span>';
-
         var batteryEmptyIcon =
             '<span class="battery-empty-icon ' +
             '"><i class="fas fa-' +
@@ -118,20 +113,47 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
             '"></i></span>';
 
         // create dom element of sensor data's
-        self.sensorsData.forEach((sensor, index) => {
-            if (self.config.hideNotTodayMeasurement && !sensor.isTodayMeasurement) return;
+        self.sensorsData.forEach((sensor) => {
+            if (
+                self.config.hideNotTodayMeasurement &&
+                !sensor.isTodayMeasurement
+            )
+                return;
             const sensorData = document.createElement('tr');
             const sensorName = document.createElement('td');
-            sensorName.className = 'name'
-            sensorName.innerHTML = (sensor.battery > self.batteryLimit
+            sensorName.className = 'name';
+            sensorName.innerHTML =
+                sensor.batteryVoltage > self.batteryLimit
                     ? sensor.name
-                    : sensor.name + batteryEmptyIcon);
+                    : sensor.name + batteryEmptyIcon;
             const sensorTemperature = document.createElement('td');
             sensorTemperature.className = 'align-right bright temperature';
-            sensorTemperature.innerHTML = self._formatDecimal(sensor.temperature, 1) +' &#8451;';
+            sensorTemperature.innerHTML =
+                self._formatDecimal(sensor.temperature, 1) + ' &#8451;';
             sensorData.appendChild(sensorName);
             sensorData.appendChild(sensorTemperature);
+
             wrapper.appendChild(sensorData);
+            if (sensor.isRuuviAir) {
+                const airQuality = document.createElement('tr');
+                const empty = document.createElement('td');
+                airQuality.appendChild(empty);
+
+                const iaqLevel = document.createElement('tr');
+                const iaqContainer = document.createElement('div');
+                for (let i = 1; i <= 5; i++) {
+                    const bar = document.createElement('div');
+                    bar.classList.add('bar');
+                    if (i >= 5 - sensor.iaqLevel) {
+                        bar.classList.add('filled');
+                    }
+                    ratingContainer.appendChild(bar);
+                }
+
+                iaqLevel.appendChild(iaqContainer);
+                airQuality.appendChild(iaqLevel);
+                wrapper.appendChild(airQuality);
+            }
         });
 
         // show upadated timestamp only once and use firs sensor timestamp
