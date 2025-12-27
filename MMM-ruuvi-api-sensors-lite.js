@@ -135,19 +135,20 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
             wrapper.appendChild(sensorData);
             if (sensor.isRuuviAir) {
                 const airQuality = document.createElement('tr');
-                const empty = document.createElement('td');
-                airQuality.appendChild(empty);
+                const iaqLevel = document.createElement('td');
+                iaqLevel.setAttribute('colspan', '2');
 
-                const iaqLevel = document.createElement('tr');
                 const iaqContainer = document.createElement('div');
                 iaqContainer.className = 'rating-container';
+
                 for (let i = 1; i <= 5; i++) {
-                    const bar = document.createElement('div');
-                    bar.classList.add('bar');
-                    bar.classList.add('iaq-level-'+sensor.iaqLevel);
-                    bar.classList.add('iaq-'+sensor.iaq);
+                    const bar = document.createElement('span');
+                    bar.className = 'iaq-' +sensor.iaq+ '_iaq-' + sensor.iaqLevel;
+
                     if (i <= sensor.iaqLevel) {
-                        bar.classList.add('filled');
+                        bar.innerHTML = '<i class="fa-solid fa-star bright"></i>';
+                    } else {
+                        bar.innerHTML = '<i class="fa-regular fa-star"></i>';
                     }
                     iaqContainer.appendChild(bar);
                 }

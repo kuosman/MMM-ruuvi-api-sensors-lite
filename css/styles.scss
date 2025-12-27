@@ -13,20 +13,8 @@ div.MMM-ruuvi-api-sensors-lite {
     }
 
     .rating-container {
-        display: flex;
-        gap: 5px;
-
-        div.bar {
-            width: 16px;
-            height: 6px;
-            border: 2px solid white;
-            background-color: transparent;
-            transition: background-color 0.3s;
-            border-radius: 4px;
-
-            &.filled {
-                background-color: white; /* väritetty palkki */
-            }
+        i {
+            padding-left: 2px;
         }
     }
 }

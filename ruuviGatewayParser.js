@@ -43,15 +43,6 @@ function parseGatewayResponse(apiResponse) {
         .filter((s) => s !== null);
 }
 
-function iaqScoreToLevel(iaq) {
-    if (iaq == null) return null;
-
-    if (iaq >= 85) return 1; // Excellent
-    if (iaq >= 70) return 2; // Good
-    if (iaq >= 55) return 3; // Moderate
-    if (iaq >= 40) return 4; // Poor
-    return 5;               // Very Poor
-}
 
 /* =========================
    BLE → Manufacturer Data
@@ -122,34 +113,35 @@ function isRuuviAir(parsed) {
 /* =========================
    IAQ-calculation
 ========================= */
-function normalizeVoc(vocRaw) {
-    if (vocRaw == null) return null;
-
-    // clamp uint16
-    const v = Math.min(Math.max(vocRaw, 0), 65535);
-
-    // logaritminen skaala (toimii hyvin)
-    return Math.min(500, Math.log10(v + 1) * 100);
-}
-
 function calculateIAQ({ voc, nox }) {
     if (voc == null && nox == null) return null;
 
-    let badness = 0;
+    // Normalize VOC 0–1
+    let vNorm = Math.log10(voc + 1) / 4; // Jakaja 4 → korkea IAQ isoille VOC-arvoille
+    if (vNorm > 1) vNorm = 1;
 
-    if (voc != null) {
-        const v = normalizeVoc(voc) / 500;
-        badness += Math.pow(v, 2) * 75; // VOC dominoi
-    }
+    // NOx
+    const nNorm = nox != null ? Math.min(nox / 100, 1) : 0;
 
-    if (nox != null) {
-        const n = Math.min(nox / 100, 1);
-        badness += Math.pow(n, 2) * 25;
-    }
+    // Badness: 0 = hyvä, 1 = huono
+    const badness = 0.85 * Math.pow(1 - vNorm, 1) + 0.15 * Math.pow(nNorm, 1.8);
 
-    const iaq = Math.round(100 - Math.min(badness, 100));
-    return iaq;
+    // IAQ iso = hyvä
+    return Math.round(100 * (1 - badness));
 }
+
+function iaqScoreToLevel(iaq) {
+    if (iaq == null) return null;
+    if (iaq >= 80) return 5; // Excellent / Good
+    if (iaq >= 60) return 4;
+    if (iaq >= 40) return 3;
+    if (iaq >= 20) return 2;
+    return 1; // Very Poor
+}
+
+
+
+
 
 /* =========================
    DF3 (old Tag)
