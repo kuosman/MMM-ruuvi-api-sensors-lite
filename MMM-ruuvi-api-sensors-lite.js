@@ -133,6 +133,7 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
             sensorData.appendChild(sensorTemperature);
 
             wrapper.appendChild(sensorData);
+            /* NOT REALLY WORKING IAQ CALCULATION SO NOT SHOW AIR QUALITY
             if (sensor.isRuuviAir) {
                 const airQuality = document.createElement('tr');
                 const iaqLevel = document.createElement('td');
@@ -156,7 +157,7 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
                 iaqLevel.appendChild(iaqContainer);
                 airQuality.appendChild(iaqLevel);
                 wrapper.appendChild(airQuality);
-            }
+            }*/
         });
 
         // show upadated timestamp only once and use firs sensor timestamp
