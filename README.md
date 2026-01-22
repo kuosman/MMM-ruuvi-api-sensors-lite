@@ -22,8 +22,7 @@ modules: [{
                 updateInterval: 5 * 1000 * 60, // every 5 minutes
                 apiUrl: 'https://network.ruuvi.com',
                 token: '<TOKEN>',
-                negativeColor: '#4800FF',
-                highlightNegative: true
+                negativeColor: '#4800FF'
 	}
 }]
 ````
@@ -41,4 +40,3 @@ The following properties can be configured:
 | `token`                               |                             | **Necessary** own token, get it: <br>- Register user or reset token: Send POST message with following body ```{"email":         "your@email.com"}``` to `https://network.ruuvi.com/register`<br>- Verify account: Send GET message with `token` parameter to `https://network.ruuvi.com/verify?token=<TOKEN IN YOUR EMAIL>`<br>- When verified account you get response JSON where your acces token is<br><br>read more: https://docs.ruuvi.com/communication/cloud/user-api
 | `negativeColor`                       | `#4800FF`                   | Highlight negative value this color
 | `highlightNegative`                   | `true`                      | Higlight negative measurements true/false
-| `hideNotTodayMeasurement`             | `false`                     | Hide not today measurement  true/false

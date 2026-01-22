@@ -16,8 +16,7 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
         apiUrl: 'https://network.ruuvi.com',
         token: '',
         negativeColor: '#4800FF',
-        highlightNegative: true,
-        hideNotTodayMeasurement: false
+        highlightNegative: true
     },
 
     sensorsData: null,
