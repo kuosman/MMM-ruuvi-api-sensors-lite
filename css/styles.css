@@ -10,6 +10,19 @@ div.MMM-ruuvi-api-sensors-lite td span.battery-empty-icon {
   position: relative;
   top: 1px;
 }
-div.MMM-ruuvi-api-sensors-lite .rating-container i {
-  padding-left: 2px;
+div.MMM-ruuvi-api-sensors-lite .temp-value {
+  font-size: 1em;
+}
+div.MMM-ruuvi-api-sensors-lite .aqi-mini-bar {
+  width: 60px;
+  height: 3px;
+  background: #333;
+  border-radius: 2px;
+  margin-top: 3px;
+  margin-left: auto; /* oikeaan reunaan */
+  overflow: hidden;
+}
+div.MMM-ruuvi-api-sensors-lite .aqi-mini-fill {
+  height: 100%;
+  background: #aaa;
 }/*# sourceMappingURL=styles.css.map */

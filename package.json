@@ -23,7 +23,7 @@
     "dependencies": {
         "moment": "latest",
         "request": "latest",
-        "ruuvi-gateway-parser": "github:kuosman/ruuvi-gateway-parser#1.0.0"
+        "ruuvi-gateway-parser": "github:kuosman/ruuvi-gateway-parser#v1.1.0"
     },
     "devDependencies": {
         "jest": "^29.7.0"

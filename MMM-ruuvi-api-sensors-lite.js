@@ -110,54 +110,38 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
             '"><i class="fas fa-' +
             self.config.batteryEmptyIcon +
             '"></i></span>';
-
         // create dom element of sensor data's
         self.sensorsData.forEach((sensor) => {
-            if (
-                self.config.hideNotTodayMeasurement &&
-                !sensor.isTodayMeasurement
-            )
-                return;
             const sensorData = document.createElement('tr');
             const sensorName = document.createElement('td');
             sensorName.className = 'name';
             sensorName.innerHTML =
-                (sensor.batteryVoltage > self.batteryLimit) || sensor.isRuuviAir
+                (sensor.measurement.battery > self.batteryLimit) || sensor.measurement.aqi
                     ? sensor.name
                     : sensor.name + batteryEmptyIcon;
             const sensorTemperature = document.createElement('td');
             sensorTemperature.className = 'align-right bright temperature';
-            sensorTemperature.innerHTML =
-                self._formatDecimal(sensor.temperature, 1) + ' &#8451;';
+            let temperatureHtml =
+                '<div class="temp-value">' +
+                self._formatDecimal(sensor.measurement.temperature, 1) +
+                ' &#8451;</div>';
+
+            // AQI bar (only if exists)
+            if (sensor.measurement.aqi !== undefined) {
+                const aqi = Math.max(0, Math.min(100, sensor.measurement.aqi));
+
+                temperatureHtml +=
+                    '<div class="aqi-mini-bar">' +
+                    '<div class="aqi-mini-fill" style="width:' +
+                    aqi +
+                    '%"></div>' +
+                    '</div>';
+            }
+            sensorTemperature.innerHTML = temperatureHtml;
             sensorData.appendChild(sensorName);
             sensorData.appendChild(sensorTemperature);
 
             wrapper.appendChild(sensorData);
-            /* NOT REALLY WORKING IAQ CALCULATION SO NOT SHOW AIR QUALITY
-            if (sensor.isRuuviAir) {
-                const airQuality = document.createElement('tr');
-                const iaqLevel = document.createElement('td');
-                iaqLevel.setAttribute('colspan', '2');
-
-                const iaqContainer = document.createElement('div');
-                iaqContainer.className = 'rating-container';
-
-                for (let i = 1; i <= 5; i++) {
-                    const bar = document.createElement('span');
-                    bar.className = 'iaq-' +sensor.iaq+ '_iaq-' + sensor.iaqLevel;
-
-                    if (i <= sensor.iaqLevel) {
-                        bar.innerHTML = '<i class="fa-solid fa-star bright"></i>';
-                    } else {
-                        bar.innerHTML = '<i class="fa-regular fa-star"></i>';
-                    }
-                    iaqContainer.appendChild(bar);
-                }
-
-                iaqLevel.appendChild(iaqContainer);
-                airQuality.appendChild(iaqLevel);
-                wrapper.appendChild(airQuality);
-            }*/
         });
 
         // show upadated timestamp only once and use firs sensor timestamp
@@ -166,7 +150,7 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
             const sensorTime = document.createElement('td');
             sensorTime.className = 'light small time';
             sensorTime.colSpan = '3';
-            sensorTime.innerHTML = self.sensorsData[0].timestampString;
+            sensorTime.innerHTML = self.sensorsData[0].measurement.timestampString;
             sensorData.appendChild(sensorTime);
             wrapper.appendChild(sensorData);
         }
