@@ -22,6 +22,13 @@
     "homepage": "git+https://github.com/kuosman/MMM-ruuvi-api-sensors-lite#readme",
     "dependencies": {
         "moment": "latest",
-        "request": "latest"
+        "request": "latest",
+        "ruuvi-gateway-parser": "github:kuosman/ruuvi-gateway-parser#v1.1.0"
+    },
+    "devDependencies": {
+        "jest": "^29.7.0"
+    },
+    "scripts": {
+        "test": "jest"
     }
 }

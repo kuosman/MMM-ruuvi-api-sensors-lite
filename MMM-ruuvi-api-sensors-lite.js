@@ -16,8 +16,7 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
         apiUrl: 'https://network.ruuvi.com',
         token: '',
         negativeColor: '#4800FF',
-        highlightNegative: true,
-        hideNotTodayMeasurement: false
+        highlightNegative: true
     },
 
     sensorsData: null,
@@ -91,10 +90,9 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
     getRowDom: function () {
         const self = this;
         var wrapper = document.createElement('table');
-
-
         if (!self.config.sensor === null) {
-            wrapper.innerHTML = this.translate('configEmpty') + this.name + '.';
+            wrapper.innerHTML =
+                this.translate('configEmpty') + this.name + '.';
             wrapper.className = 'ruuvi-api-sensors-lite small';
             return wrapper;
         }
@@ -106,31 +104,42 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
         }
         wrapper.className = 'ruuvi-api-sensors-lite small';
 
-        var temperatureIcon =
-            '<span class="icon"><i class="fas fa-' +
-            self.config.temperatureIcon +
-            '"></i></span>';
-
         var batteryEmptyIcon =
             '<span class="battery-empty-icon ' +
             '"><i class="fas fa-' +
             self.config.batteryEmptyIcon +
             '"></i></span>';
-
         // create dom element of sensor data's
-        self.sensorsData.forEach((sensor, index) => {
-            if (self.config.hideNotTodayMeasurement && !sensor.isTodayMeasurement) return;
+        self.sensorsData.forEach((sensor) => {
             const sensorData = document.createElement('tr');
             const sensorName = document.createElement('td');
-            sensorName.className = 'name'
-            sensorName.innerHTML = (sensor.battery > self.batteryLimit
+            sensorName.className = 'name';
+            sensorName.innerHTML =
+                (sensor.measurement.battery > self.batteryLimit) || sensor.measurement.aqi
                     ? sensor.name
-                    : sensor.name + batteryEmptyIcon);
+                    : sensor.name + batteryEmptyIcon;
             const sensorTemperature = document.createElement('td');
             sensorTemperature.className = 'align-right bright temperature';
-            sensorTemperature.innerHTML = self._formatDecimal(sensor.temperature, 1) +' &#8451;';
+            let temperatureHtml =
+                '<div class="temp-value">' +
+                self._formatDecimal(sensor.measurement.temperature, 1) +
+                ' &#8451;</div>';
+
+            // AQI bar (only if exists)
+            if (sensor.measurement.aqi !== undefined) {
+                const aqi = Math.max(0, Math.min(100, sensor.measurement.aqi));
+
+                temperatureHtml +=
+                    '<div class="aqi-mini-bar">' +
+                    '<div class="aqi-mini-fill" style="width:' +
+                    aqi +
+                    '%"></div>' +
+                    '</div>';
+            }
+            sensorTemperature.innerHTML = temperatureHtml;
             sensorData.appendChild(sensorName);
             sensorData.appendChild(sensorTemperature);
+
             wrapper.appendChild(sensorData);
         });
 
@@ -140,8 +149,8 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
             const sensorTime = document.createElement('td');
             sensorTime.className = 'light small time';
             sensorTime.colSpan = '3';
-            sensorTime.innerHTML = self.sensorsData[0].time;
-            sensorData.appendChild(sensorTime)
+            sensorTime.innerHTML = self.sensorsData[0].measurement.timestampString;
+            sensorData.appendChild(sensorTime);
             wrapper.appendChild(sensorData);
         }
         return wrapper;
