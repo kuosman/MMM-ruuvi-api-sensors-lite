@@ -1,6 +1,6 @@
 {
     "name": "Magic-Mirror-Module-Ruuvi-Api-Sensors-Lite",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "This module for the Magic Mirror allows you to show Ruuvi sensors temepratures from ruuvi gateway api.",
     "repository": {
         "type": "git",
