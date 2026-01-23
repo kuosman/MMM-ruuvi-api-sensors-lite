@@ -11,17 +11,13 @@
 Module.register('MMM-ruuvi-api-sensors-lite', {
     // Default module config.
     defaults: {
-        batteryEmptyIcon: 'battery-half', // See free icons: https://fontawesome.com/icons?d=gallery
         updateInterval: 5 * 1000 * 60, // every 5 minutes
         apiUrl: 'https://network.ruuvi.com',
-        token: '',
-        negativeColor: '#4800FF',
-        highlightNegative: true
+        token: ''
     },
 
     sensorsData: null,
     updateTimer: null,
-    batteryLimit: 2420, // if below this value, show battery empty warning,
     identifier: Date.now(),
 
     /**
@@ -50,20 +46,6 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
     },
 
     /**
-     * Gets measurement value HTML style
-     * @private
-     * @function _getMeasurementValueStyle
-     * @param {number} value
-     * @returns {string} style
-     */
-    _getMeasurementValueStyle: function (value) {
-        const self = this;
-        if (value < 0 && self.config.highlightNegative) {
-            return 'style="color:' + self.config.negativeColor + ';"';
-        } else return '';
-    },
-
-    /**
      * Format decimal number
      * @private
      * @function _formatDecimal
@@ -81,6 +63,22 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
             minimumFractionDigits: decimals,
             maximumFractionDigits: decimals,
         });
+    },
+
+    /**
+     * Is battery low
+     * @param {number} voltage
+     * @param {number} temperature
+     * @returns  {boolean}
+     */
+    _isBatteryLow: function isBatteryLow(voltage, temperature) {
+        if (temperature < -20) {
+            return voltage < 2000
+        } else if (temperature < 0) {
+            return voltage < 2300
+        } else {
+            return voltage < 2500
+        }
     },
 
     /**
@@ -105,17 +103,15 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
         wrapper.className = 'ruuvi-api-sensors-lite small';
 
         var batteryEmptyIcon =
-            '<span class="battery-empty-icon ' +
-            '"><i class="fas fa-' +
-            self.config.batteryEmptyIcon +
-            '"></i></span>';
+            '<span class="battery-empty-icon balanced-blink' +
+            '"><i class="fas fa-battery-half"></i></span>';
         // create dom element of sensor data's
         self.sensorsData.forEach((sensor) => {
             const sensorData = document.createElement('tr');
             const sensorName = document.createElement('td');
             sensorName.className = 'name';
             sensorName.innerHTML =
-                (sensor.measurement.battery > self.batteryLimit) || sensor.measurement.aqi
+                (sensor.measurement.aqi || !self._isBatteryLow(sensor.measurement.battery, sensor.measurement.temperature))
                     ? sensor.name
                     : sensor.name + batteryEmptyIcon;
             const sensorTemperature = document.createElement('td');
