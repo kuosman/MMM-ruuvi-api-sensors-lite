@@ -20,7 +20,8 @@ modules: [{
 	config: {
                 updateInterval: 5 * 1000 * 60, // every 5 minutes
                 apiUrl: 'https://network.ruuvi.com',
-                token: '<TOKEN>'
+                token: '<TOKEN>',
+				showAqiColors: false
 	}
 }]
 ````
@@ -35,3 +36,4 @@ The following properties can be configured:
 | `updateInterval`			            | `30000`                     | Update interval in milliseconds. Limited minumum value for 1 minute because API blocks faster updates.
 | `apiUrl`			                 	| `https://network.ruuvi.com` | Api url
 | `token`                               |                             | **Necessary** own token, get it: <br>- Register user or reset token: Send POST message with following body ```{"email":         "your@email.com"}``` to `https://network.ruuvi.com/register`<br>- Verify account: Send GET message with `token` parameter to `https://network.ruuvi.com/verify?token=<TOKEN IN YOUR EMAIL>`<br>- When verified account you get response JSON where your acces token is<br><br>read more: https://docs.ruuvi.com/communication/cloud/user-api
+| `showAqiColors`               | `false`                       | Show air quality (aqi) bar in colors |

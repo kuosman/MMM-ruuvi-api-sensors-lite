@@ -49,5 +49,25 @@ div.MMM-ruuvi-api-sensors-lite {
     .aqi-mini-fill {
         height: 100%;
         background: #aaa;
+
+        &.aqi_excellent {
+            background: #4ac9b8;
+        }
+
+        &.aqi_good {
+            background: #95cd48;
+        }
+
+        &.aqi_moderate {
+            background: #f7e13d;
+        }
+
+        &.aqi_poor {
+            background: #f79c21;
+        }
+
+        &.aqi_very_poor {
+            background: #ed5020;
+        }
     }
 }

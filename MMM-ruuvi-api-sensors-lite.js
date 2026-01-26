@@ -13,7 +13,8 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
     defaults: {
         updateInterval: 5 * 1000 * 60, // every 5 minutes
         apiUrl: 'https://network.ruuvi.com',
-        token: ''
+        token: '',
+        showAqiColors: true
     },
 
     sensorsData: null,
@@ -124,10 +125,11 @@ Module.register('MMM-ruuvi-api-sensors-lite', {
             // AQI bar (only if exists)
             if (sensor.measurement.aqi !== undefined) {
                 const aqi = Math.max(0, Math.min(100, sensor.measurement.aqi));
+                const aqiColorClass = self.config.showAqiColors ? ' aqi_' + sensor.measurement.aqiText : '';
 
                 temperatureHtml +=
                     '<div class="aqi-mini-bar">' +
-                    '<div class="aqi-mini-fill" style="width:' +
+                    '<div class="aqi-mini-fill' + aqiColorClass +  '" style="width:' +
                     aqi +
                     '%"></div>' +
                     '</div>';

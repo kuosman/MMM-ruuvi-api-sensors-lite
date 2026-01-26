@@ -43,4 +43,19 @@ div.MMM-ruuvi-api-sensors-lite .aqi-mini-bar {
 div.MMM-ruuvi-api-sensors-lite .aqi-mini-fill {
   height: 100%;
   background: #aaa;
+}
+div.MMM-ruuvi-api-sensors-lite .aqi-mini-fill.aqi_excellent {
+  background: #4ac9b8;
+}
+div.MMM-ruuvi-api-sensors-lite .aqi-mini-fill.aqi_good {
+  background: #95cd48;
+}
+div.MMM-ruuvi-api-sensors-lite .aqi-mini-fill.aqi_moderate {
+  background: #f7e13d;
+}
+div.MMM-ruuvi-api-sensors-lite .aqi-mini-fill.aqi_poor {
+  background: #f79c21;
+}
+div.MMM-ruuvi-api-sensors-lite .aqi-mini-fill.aqi_very_poor {
+  background: #ed5020;
 }/*# sourceMappingURL=styles.css.map */
