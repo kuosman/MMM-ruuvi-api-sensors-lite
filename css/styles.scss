@@ -1,4 +1,23 @@
 div.MMM-ruuvi-api-sensors-lite {
+    .balanced-blink {
+        animation: balancedBlink 2.2s ease-in-out infinite;
+    }
+
+    @keyframes balancedBlink {
+        0% {
+            opacity: 0.9;
+            filter: drop-shadow(0 0 2px rgba(255,255,255,0.25));
+        }
+        50% {
+            opacity: 0.45;
+            filter: drop-shadow(0 0 7px rgba(255,255,255,0.55));
+        }
+        100% {
+            opacity: 0.9;
+            filter: drop-shadow(0 0 2px rgba(255,255,255,0.25));
+        }
+    }
+
     td {
         text-align: right;
         padding-right: 16px;
@@ -9,6 +28,7 @@ div.MMM-ruuvi-api-sensors-lite {
             padding-left: 8px;
             position: relative;
             top: 1px;
+            color: #ff5252;
         }
     }
 
@@ -29,5 +49,25 @@ div.MMM-ruuvi-api-sensors-lite {
     .aqi-mini-fill {
         height: 100%;
         background: #aaa;
+
+        &.aqi_excellent {
+            background: #4ac9b8;
+        }
+
+        &.aqi_good {
+            background: #95cd48;
+        }
+
+        &.aqi_moderate {
+            background: #f7e13d;
+        }
+
+        &.aqi_poor {
+            background: #f79c21;
+        }
+
+        &.aqi_very_poor {
+            background: #ed5020;
+        }
     }
 }
